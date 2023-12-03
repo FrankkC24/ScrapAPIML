@@ -1,6 +1,6 @@
-### Node.js Scripts - README.md
+### SpotifyScrap v1.4.2
 
-This repository contains several Node.js scripts designed to facilitate the setup, build, and execution of an application. Below is a description of the purpose of each script:
+This repository contains several SpotifyScrap scripts designed to facilitate the setup, build, and execution of an application. Below is a description of the purpose of each script:
 
 #### 1. `setup`
 
