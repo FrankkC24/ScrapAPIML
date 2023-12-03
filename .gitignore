@@ -1,0 +1,15 @@
+.vscode/
+.idea/
+
+node_modules/
+
+*.swp
+*.bak
+*.tmp
+*.cache
+*.project
+*.settings
+*.tmproj
+*.log
+
+*.env
