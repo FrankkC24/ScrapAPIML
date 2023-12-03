@@ -5,7 +5,7 @@ This repository contains several SpotifyScrap scripts designed to facilitate the
 #### 1. `setup`
 
 ```bash
-pnpm run setup
+npm run setup
 ```
 
 This script installs the `pnpm` package manager and performs the following actions:
