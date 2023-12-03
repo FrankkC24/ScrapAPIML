@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 require('dotenv').config();
 
-import { checkGroupStatus } from './modules/fullGroup';
+import { checkGroupStatus } from './modules/checkInvitation';
 
 const app: express.Application = express();
 const port: number = parseInt(process.env.PORT || '3000', 10);
