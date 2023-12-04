@@ -40,12 +40,12 @@ const checkGroupStatus = async (link) => {
     }
     catch (error) {
         try {
-            await page.waitForSelector('#invitation-expired-error-page', { visible: true, timeout: 500 });
+            await page.waitForSelector('#invitation-expired-error-page', { visible: false, timeout: 500 });
             return 'Invitación expirada';
         }
         catch (expirationError) {
             try {
-                await page.waitForSelector('#general-error-page', { visible: true, timeout: 500 });
+                await page.waitForSelector('#general-error-page', { visible: false, timeout: 500 });
                 return 'Invitación no válida';
             }
             catch (invalidError) {
@@ -53,6 +53,7 @@ const checkGroupStatus = async (link) => {
             }
             finally {
                 if (page) {
+                    await page.close();
                     await browser.close();
                 }
                 ;
@@ -64,4 +65,4 @@ const checkGroupStatus = async (link) => {
     ;
 };
 exports.checkGroupStatus = checkGroupStatus;
-//# sourceMappingURL=fullGroup.js.map
+//# sourceMappingURL=checkInvitation.js.map

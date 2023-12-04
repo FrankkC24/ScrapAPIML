@@ -19,16 +19,17 @@ export const checkGroupStatus = async (link: string): Promise<string> => {
     return 'Grupo lleno';
   } catch (error: any) {
     try {
-      await page.waitForSelector('#invitation-expired-error-page', { visible: true, timeout: 500 });
+      await page.waitForSelector('#invitation-expired-error-page', { visible: false, timeout: 500 });
       return 'Invitación expirada';
     } catch (expirationError: any) {
       try {
-        await page.waitForSelector('#general-error-page', { visible: true, timeout: 500 });
+        await page.waitForSelector('#general-error-page', { visible: false, timeout: 500 });
         return 'Invitación no válida';
       } catch (invalidError: any) {
         return 'Grupo con espacio';
       } finally {
         if (page) {
+          await page.close();
           await browser.close();
         };
       };

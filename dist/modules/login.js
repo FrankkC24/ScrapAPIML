@@ -24,27 +24,27 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginToSpotify = void 0;
-const utils_1 = require("../utils");
 const fs = __importStar(require("fs"));
 const loginToSpotify = async (page) => {
     const accounts = JSON.parse(fs.readFileSync('./dist/accounts/accounts.json', 'utf-8'));
     for (const account of accounts) {
         try {
             await page.goto('https://accounts.spotify.com/login', { waitUntil: 'domcontentloaded', timeout: 3000 });
-            await page.waitForSelector('#login-username', { visible: false, timeout: 500 });
+            await Promise.all([
+                page.waitForSelector('#login-username', { visible: false, timeout: 500 }),
+            ]);
             await page.type('#login-username', account.username);
             await page.type('#login-password', account.password);
-            await (0, utils_1.delay)(1000);
-            await page.click('.ButtonFocus-sc-2hq6ey-0.csWrjt');
-            await page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 3000 });
+            await Promise.all([
+                page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 3000 }),
+                page.click('.ButtonFocus-sc-2hq6ey-0.csWrjt'),
+            ]);
             return;
         }
         catch (error) {
             console.error(`Error en el inicio de sesión para la cuenta ${account.username}: ${error.message}`);
         }
-        ;
     }
-    ;
     throw new Error('Ninguna cuenta pudo iniciar sesión exitosamente');
 };
 exports.loginToSpotify = loginToSpotify;

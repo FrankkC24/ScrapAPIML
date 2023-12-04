@@ -4,6 +4,7 @@ import cors from 'cors';
 require('dotenv').config();
 
 import { checkGroupStatus } from './modules/checkInvitation';
+import { validateSpotifyLink } from './utils/validateLink';
 
 const app: express.Application = express();
 const port: number = parseInt(process.env.PORT || '3000', 10);
@@ -18,16 +19,19 @@ app.disable('x-powered-by');
 
 app.post('/invitacion/:link(*)', async (req: Request<{ link: string }>, res: Response<{ message: string }>) => {
   const { link } = req.params;
+  const validationResult = validateSpotifyLink(link);
 
-  if (!link || typeof link !== 'string') {
-    return res.status(400).json({ message: 'El enlace ingresado no corresponde a una invitación de Spotify, ingrese una invitación correcta.' });
+  if (!validationResult.isValid) {
+    return res.status(400).json({ message: validationResult.message });
   }
 
+  const spotifyInviteLink = validationResult.spotifyInviteLink;
+  
   try {
-    const groupStatus: string = await checkGroupStatus(link);
+    const groupStatus = await checkGroupStatus(spotifyInviteLink);
     res.status(200).json({ message: groupStatus });
   } catch (error: any) {
-    res.status(500).json({ message: 'Error al verificar el estado del grupo.' });
+    res.status(500).json({ message: `Error al verificar el estado del grupo (endpoint): ${error.message}` });
   }
 });
 

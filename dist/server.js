@@ -7,7 +7,8 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 require('dotenv').config();
-const fullGroup_1 = require("./modules/fullGroup");
+const checkInvitation_1 = require("./modules/checkInvitation");
+const validateLink_1 = require("./utils/validateLink");
 const app = (0, express_1.default)();
 const port = parseInt(process.env.PORT || '3000', 10);
 app.use(body_parser_1.default.json());
@@ -17,15 +18,17 @@ app.use(express_1.default.json());
 app.disable('x-powered-by');
 app.post('/invitacion/:link(*)', async (req, res) => {
     const { link } = req.params;
-    if (!link || typeof link !== 'string') {
-        return res.status(400).json({ message: 'El enlace ingresado no corresponde a una invitación de Spotify, ingrese una invitación correcta.' });
+    const validationResult = (0, validateLink_1.validateSpotifyLink)(link);
+    if (!validationResult.isValid) {
+        return res.status(400).json({ message: validationResult.message });
     }
+    const spotifyInviteLink = validationResult.spotifyInviteLink;
     try {
-        const groupStatus = await (0, fullGroup_1.checkGroupStatus)(link);
+        const groupStatus = await (0, checkInvitation_1.checkGroupStatus)(spotifyInviteLink);
         res.status(200).json({ message: groupStatus });
     }
     catch (error) {
-        res.status(500).json({ message: 'Error al verificar el estado del grupo.' });
+        res.status(500).json({ message: `Error al verificar el estado del grupo (endpoint): ${error.message}` });
     }
 });
 app.listen(port, () => {
