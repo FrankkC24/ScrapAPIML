@@ -1,6 +1,6 @@
 ### Lank Scrap API 1.5.0
 
-This repository contains several SpotifyScrap scripts designed to facilitate the setup, build, and execution of an application. Below is a description of the purpose of each script:
+This repository contains several Lank Scrap API scripts designed to facilitate the setup, build, and execution of an application. Below is a description of the purpose of each script:
 
 #### 1. `setup`
 
