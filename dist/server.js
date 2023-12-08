@@ -9,6 +9,7 @@ const cors_1 = __importDefault(require("cors"));
 require('dotenv').config();
 const checkInvitation_1 = require("./modules/checkInvitation");
 const validateLink_1 = require("./utils/validateLink");
+const getMLCID_1 = require("./modules/getMLCID");
 const app = (0, express_1.default)();
 const port = parseInt(process.env.PORT || '3000', 10);
 app.use(body_parser_1.default.json());
@@ -29,6 +30,16 @@ app.post('/invitacion/:link(*)', async (req, res) => {
     }
     catch (error) {
         res.status(500).json({ message: `Error al verificar el estado del grupo (endpoint): ${error.message}` });
+    }
+});
+app.get('/scrape/:mlcID', async (req, res) => {
+    const mlcID = req.params.mlcID;
+    const mlcid = await (0, getMLCID_1.getMLCID)(mlcID);
+    if (mlcid) {
+        res.json({ MLCID: mlcid });
+    }
+    else {
+        res.status(404).json({ error: 'No se encontró el MLCID' });
     }
 });
 app.listen(port, () => {

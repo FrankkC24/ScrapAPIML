@@ -5,6 +5,7 @@ require('dotenv').config();
 
 import { checkGroupStatus } from './modules/checkInvitation';
 import { validateSpotifyLink } from './utils/validateLink';
+import { getMLCID } from './modules/getMLCID';
 
 const app: express.Application = express();
 const port: number = parseInt(process.env.PORT || '3000', 10);
@@ -32,6 +33,18 @@ app.post('/invitacion/:link(*)', async (req: Request<{ link: string }>, res: Res
     res.status(200).json({ message: groupStatus });
   } catch (error: any) {
     res.status(500).json({ message: `Error al verificar el estado del grupo (endpoint): ${error.message}` });
+  }
+});
+
+app.get('/scrape/:mlcID', async (req, res) => {
+  const mlcID = req.params.mlcID;
+
+  const mlcid = await getMLCID(mlcID);
+
+  if (mlcid) {
+    res.json({MLCID: mlcid});
+  } else {
+    res.status(404).json({error: 'No se encontró el MLCID'});
   }
 });
 
