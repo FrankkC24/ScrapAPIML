@@ -1,5 +1,5 @@
 {
-  "name": "lank-scrap-api",
+  "name": "scrap-api-ml",
   "version": "1.5.0",
   "description": "Lank Scrap API",
   "main": "index.js",
